@@ -1,7 +1,3 @@
-# Оцените работу куратора
-# Оцените качество материала
-# Посоветовали бы вы другу
-
 
 import telebot
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
@@ -64,16 +60,19 @@ def get_course_name(message):
     my_bot.send_message(client_id, f'{name}, на сколько баллов Вы оцениваете этот курс, от 0 до 10?')
     my_bot.register_next_step_handler(message, get_rating_0)
 
-# def function_name_cycler(func):  # получает функцию и возвращает ее имя (СТРОКУ!!!) с увеличенным на 1 последним символом
-#     func_queue_index = int(func.__name__[-1]) + 1
-#     next_func_name = func.__name__[0:-1] + str(func_queue_index)
-#     return next_func_name       # <--- Это строка!
+def function_name_cycler(func):  # получает функцию и возвращает ее имя (СТРОКУ!!!) с увеличенным на 1 последним символом
+    global client_id
+    # my_bot.send_message(client_id, f'Декоратор function_name_cycler. работаю с {func.__name__}.')
+    func_queue_index = int(func.__name__[-1]) + 1
+    next_func_name = func.__name__[0:-1] + str(func_queue_index)
+    return next_func_name
+
 
 
 def response_checker(func):
     def wrapper(*args):
         global client_id
-        my_bot.send_message(client_id, f'Декоратор. работаю с {func.__name__}.')
+        # my_bot.send_message(client_id, f'Декоратор. работаю с {func.__name__}.')
         try:
             # my_bot.send_message(client_id, f'начинаю блок try декоратора')
             int(args[0].text)  # проверяем, что оценка - это целое число
@@ -86,40 +85,42 @@ def response_checker(func):
                 request = my_bot.send_message(client_id, f'Пожалуйста, поставьте оценку от 0 до 10.')
                 my_bot.register_next_step_handler(request, wrapper)
             else:
-                return func(*args)
+                func(*args)
+                my_bot.register_next_step_handler(args[0], functions_dictionary[function_name_cycler(func)])
+
+
     return wrapper# Возвращает None
 
 @response_checker
 def get_rating_0(message):          #получаем оценку курса
     global client_id
-    my_bot.send_message(client_id, f'старт функции get_rating_0')
+    # my_bot.send_message(client_id, f'старт функции get_rating_0')
     clients[client_id]['course_rating'] = int(message.text)
     my_bot.send_message(client_id, 'Пожалуйста, оцените работу куратора 0 до 10')
-    my_bot.register_next_step_handler(message, get_rating_1)
     return int(message.text)
 
 @response_checker
 def get_rating_1(message):          #получаем оценку куратора
     global client_id
-    my_bot.send_message(client_id, f'старт функции get_rating_1')
+    # my_bot.send_message(client_id, f'старт функции get_rating_1')
     clients[client_id]['curator_rating'] = int(message.text)
     my_bot.send_message(client_id, 'Пожалуйста, оцените учебные материалы курса от 0 до 10')
-    my_bot.register_next_step_handler(message, get_rating_2)
+    # my_bot.register_next_step_handler(message, get_rating_2)
     return int(message.text)
 
 @response_checker
 def get_rating_2(message):          #получаем оценку материала
     global client_id
-    my_bot.send_message(client_id, f'старт функции get_rating_2')
+    # my_bot.send_message(client_id, f'старт функции get_rating_2')
     clients[client_id]['material_rating'] = int(message.text)
     my_bot.send_message(client_id, 'Насколько вероятно, что Вы порекомендуете пройти этот курс друзьям? От 0 до 10')
-    my_bot.register_next_step_handler(message, get_rating_3)
+    # my_bot.register_next_step_handler(message, get_rating_3)
     return int(message.text)
 
 @response_checker
 def get_rating_3(message):          #получаем вероятность рекомендации
     global client_id
-    my_bot.send_message(client_id, f'старт функции get_rating_3')
+    # my_bot.send_message(client_id, f'старт функции get_rating_3')
     clients[client_id]['recommendation_rating'] = int(message.text)
     get_rating_4()
     return int(message.text)
@@ -128,14 +129,22 @@ def get_rating_4():
         global client_id
         course_name = clients[client_id]['course_name']
         course_rating = clients[client_id]['course_rating']
+        curator_rating = clients[client_id]['curator_rating']
+        material_rating = clients[client_id]['material_rating']
         name = clients[client_id]['name']
         surname = clients[client_id]['surname']
         keyboard = InlineKeyboardMarkup()  # наша клавиатура
         key_yes = InlineKeyboardButton(text='Да', callback_data='correct')  # кнопка «Да»
         keyboard.add(key_yes)  # добавляем кнопку в клавиатуру
-        key_no = InlineKeyboardButton(text='Нет', callback_data='incorrect')
+        key_no = InlineKeyboardButton(text='Нет, изменить', callback_data='incorrect')
         keyboard.add(key_no)
-        question = f'{name} {surname}, Ваша оценка курса {course_name} - {course_rating} баллов из 10, верно?'
+        my_bot.send_message(client_id, f'{name}, позвольте мне уточнить')
+        question =  (f'Ваши оценки курса {course_name}:\n'
+                     f'Общая оценка - {course_rating},\n'
+                     f'Оценка работы куратора - {curator_rating},\n'
+                     f'Оценка учебных материалов - {material_rating},\n'
+                     f'верно?')
+
         my_bot.send_message(client_id, text=question, reply_markup=keyboard)
 
 functions_dictionary = {
@@ -145,7 +154,7 @@ functions_dictionary = {
     'get_phone': get_phone,
     'errors': errors,
     'get_course_name': get_course_name,
-    #'function_name_cycler': function_name_cycler,
+    'function_name_cycler': function_name_cycler,
     'response_checker': response_checker,
     'get_rating_0': get_rating_0,
     'get_rating_1': get_rating_1,
@@ -161,7 +170,7 @@ def call_handler(call):
     match call.data:
         case 'correct':
             my_bot.send_message(call.message.chat.id, f'Спасибо за оценку, {name}')
-            my_bot.answer_callback_query(callback_query_id=call.id, text='Спасибо за оценку')
+            my_bot.answer_callback_query(callback_query_id=call.id, text=f'Благодарю за Вашу за оценку, {name}. Ваш отзыв важен для нас, он помогает нам стать лучше')
             with open('clients list.txt', 'a+') as file:
                 for key, value in clients[client_id].items():
                     file.write(f'{client_id}:%s:%s\n' % (key, value))
