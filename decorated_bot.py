@@ -1,15 +1,16 @@
-
 import telebot
 import os
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
+from dotenv import load_dotenv
 
+load_dotenv()
 namelist = []
 clients = {}
 ratings_list = {}
 client_id = ''
 func_queue = 0
 
-TOKEN = os.getenv('TOKEN')
+TOKEN = os.getenv("TOKEN")
 my_bot = telebot.TeleBot(TOKEN)
 
 @my_bot.message_handler(content_types=['text'])
