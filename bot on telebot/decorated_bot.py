@@ -1,15 +1,17 @@
-
 import telebot
+import os
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
+from dotenv import load_dotenv
 
+load_dotenv()
 namelist = []
 clients = {}
 ratings_list = {}
 client_id = ''
 func_queue = 0
 
-
-my_bot = telebot.TeleBot('7633105953:AAHf383wggpu0PSz7WtfiRbxpAbGffJNcjE')
+TOKEN = os.getenv("TOKEN")
+my_bot = telebot.TeleBot(TOKEN)
 
 @my_bot.message_handler(content_types=['text'])
 def start(message):
@@ -178,7 +180,7 @@ def call_handler(call):
             message = my_bot.send_message(call.message.chat.id, f'Пожалуйста, используйте /start для оценки курса')
             my_bot.register_next_step_handler(message, start)
         case 'incorrect':
-            my_bot.answer_callback_query(callback_query_id=call.id, text='Ошибка')
+            # my_bot.answer_callback_query(callback_query_id=call.id, text='Ошибка')
             message = my_bot.send_message(call.message.chat.id, f'{name}, кажется, я Вас неправильно понял. Попробую снова.')
             errors(message)
 my_bot.infinity_polling()
