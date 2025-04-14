@@ -1,0 +1,8 @@
+359689323:name:Саша
+359689323:surname:Скуф
+359689323:phone:2341
+359689323:course_name:тестовый
+359689323:course_rating:2
+359689323:curator_rating:4
+359689323:material_rating:5
+359689323:recommendation_rating:1
