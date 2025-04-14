@@ -6,7 +6,7 @@
       <excludeFolder url="file://$MODULE_DIR$/bot on async/.venv" />
       <excludeFolder url="file://$MODULE_DIR$/bot on telebot/.venv" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.13 (HomeEd) (2)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.13 (HomeEd)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="PyDocumentationSettings">
