@@ -1,6 +1,7 @@
 import asyncio
 import aiohttp
-import certifi
+
+
 TOKEN = '7633105953:AAHf383wggpu0PSz7WtfiRbxpAbGffJNcjE'
 URL = f'https://api.telegram.org/bot{TOKEN}/'
 
