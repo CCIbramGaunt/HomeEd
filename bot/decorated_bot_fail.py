@@ -2,7 +2,7 @@
 # Оцените качество материала
 # Посоветовали бы вы другу
 
-
+import os
 import telebot
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 
@@ -12,8 +12,8 @@ ratings_list = {}
 client_id = ''
 func_queue = 0
 
-
-my_bot = telebot.TeleBot('7633105953:AAHf383wggpu0PSz7WtfiRbxpAbGffJNcjE')
+TOKEN = os.getenv("TOKEN")
+my_bot = telebot.TeleBot(TOKEN)
 
 @my_bot.message_handler(content_types=['text'])
 def start(message):

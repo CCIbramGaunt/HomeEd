@@ -1,4 +1,5 @@
 import telebot
+import os
 from telebot.types import InlineKeyboardButton, InlineKeyboardMarkup
 
 name = ''
@@ -7,7 +8,8 @@ course_rating = 0
 ratings_list = {}
 client_id = 0
 
-my_bot = telebot.TeleBot('7633105953:AAHf383wggpu0PSz7WtfiRbxpAbGffJNcjE')
+TOKEN = os.getenv("TOKEN")
+my_bot = telebot.TeleBot(TOKEN)
 
 @my_bot.message_handler(content_types=['text'])
 def start(message):

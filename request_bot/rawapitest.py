@@ -1,8 +1,8 @@
 import asyncio
 import aiohttp
+import os
 
-
-TOKEN = '7633105953:AAHf383wggpu0PSz7WtfiRbxpAbGffJNcjE'
+TOKEN = os.getenv('TOKEN')
 URL = f'https://api.telegram.org/bot{TOKEN}/'
 
 async def send_message(chat_id, text):
