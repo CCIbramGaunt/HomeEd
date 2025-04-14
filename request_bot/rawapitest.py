@@ -1,7 +1,9 @@
 import asyncio
 import aiohttp
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
 TOKEN = os.getenv('TOKEN')
 URL = f'https://api.telegram.org/bot{TOKEN}/'
 
@@ -32,11 +34,11 @@ async def get_updates():
 					offset = updates['result'][-1]['update_id'] + 1
 					for update in updates['result']:
 						await handle_updates(update)
-
-						# for_print = update.copy()
-						# for_print['message']['from']['id'] = -359689323
-						# for_print['message']['chat']['id'] = -7633105953
-						# print(for_print)
+						print(update)
+						for_print = update.copy()
+						for_print['message']['from']['id'] = -359689323
+						for_print['message']['chat']['id'] = -7633105953
+						print(for_print)
 
 async def main():
 	await get_updates()
