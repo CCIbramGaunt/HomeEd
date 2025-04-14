@@ -7,7 +7,7 @@ URL = f'https://api.telegram.org/bot{TOKEN}/'
 async def send_message(chat_id, text):
 	async with aiohttp.ClientSession() as session:
 		params = {'chat_id': chat_id, 'text': text}
-		async with session.post(URL + 'sendMessage', data = params, verify = certifi.where()) as response:
+		async with session.post(URL + 'sendMessage', data = params) as response:
 			await response.json()
 
 async def handle_updates(update):

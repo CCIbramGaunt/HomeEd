@@ -1,0 +1,8 @@
+751626617:name:Ирина
+751626617:surname:Зачем?
+751626617:phone:+79262148536
+751626617:course_name:Неважно
+751626617:course_rating:5
+751626617:curator_rating:7
+751626617:material_rating:10
+751626617:recommendation_rating:7
