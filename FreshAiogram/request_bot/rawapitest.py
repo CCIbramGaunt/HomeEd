@@ -2,6 +2,8 @@ import asyncio
 import aiohttp
 import os
 from dotenv import load_dotenv
+from asyncio import SelectorEventLoop
+import selectors
 
 # print(os.environ.get("SSL_CERT_FILE"))
 load_dotenv()

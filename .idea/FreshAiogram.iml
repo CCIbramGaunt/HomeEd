@@ -3,8 +3,13 @@
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.venv" />
+      <excludeFolder url="file://$MODULE_DIR$/FreshAiogram/.venv/Lib" />
+      <excludeFolder url="file://$MODULE_DIR$/bot on async/.venv/Include" />
+      <excludeFolder url="file://$MODULE_DIR$/bot on async/.venv/Lib" />
+      <excludeFolder url="file://$MODULE_DIR$/bot on async/.venv/Scripts" />
+      <excludeFolder url="file://$MODULE_DIR$/bot on telebot/.venv/Lib" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 3.13 (HomeEd)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 3.12" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
