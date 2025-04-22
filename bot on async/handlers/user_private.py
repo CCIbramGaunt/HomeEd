@@ -1,13 +1,15 @@
 import asyncio
 import os
-from aiogram import Bot, Dispatcher, types, Router, F
+from aiogram import types, Router, F
 from aiogram.filters import CommandStart, Command, or_f
 from dotenv import find_dotenv, load_dotenv
+from filters.chat_types import ChatTypeFilter
 
 load_dotenv(find_dotenv())
 TOKEN = os.getenv("TOKEN")
 
 user_private_router = Router()
+user_private_router.message.filter(ChatTypeFilter(['private'])) #вызвали фильтр, передав ему список применимых типов сообщений, и применили его к сообщению
 
 @user_private_router.message(CommandStart())
 async def start_cmd(message: types.Message):

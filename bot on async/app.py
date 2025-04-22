@@ -11,6 +11,7 @@ allowed_updates = ['message, edited_message']
 load_dotenv(find_dotenv())
 
 from handlers.user_private import user_private_router
+from handlers.user_group import user_group_router
 from common.bot_cmnds_list import private
 
 TOKEN = os.getenv("TOKEN")
@@ -18,6 +19,7 @@ bot = Bot(token = TOKEN)
 disp = Dispatcher()
 
 disp.include_router(user_private_router)
+disp.include_router(user_group_router)
 
 async def main():
     await bot.delete_webhook(drop_pending_updates = True)
