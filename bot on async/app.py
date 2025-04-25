@@ -1,5 +1,7 @@
 import asyncio
 from aiogram import Bot, Dispatcher, types
+from aiogram.client.default import DefaultBotProperties
+from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 import os
 
@@ -15,7 +17,7 @@ from handlers.user_group import user_group_router
 from common.bot_cmnds_list import private
 
 TOKEN = os.getenv("TOKEN")
-bot = Bot(token = TOKEN)
+bot = Bot(token = TOKEN, default = DefaultBotProperties(parse_mode= ParseMode.HTML))
 disp = Dispatcher()
 
 disp.include_router(user_private_router)
