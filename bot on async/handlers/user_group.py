@@ -1,12 +1,29 @@
-from aiogram import types, Router, F
+from aiogram import types, Router, F, Bot
 from aiogram.filters import CommandStart, Command, or_f
 from string import punctuation
+
 from filters.chat_types import ChatTypeFilter
+from common.restricted_words import restricted_words
 
 user_group_router = Router()
 user_group_router.message.filter(ChatTypeFilter(['group', 'supergroup']))
+user_group_router.edited_message.filter(ChatTypeFilter(['group', 'supergroup']))
 
-restricted_words = {'петян', 'кабан', 'васян'}
+
+@user_group_router.message(Command('admin'))
+async def get_admins(message: types.Message, bot: Bot):
+    chat_id = message.chat.id
+    admins_list = await bot.get_chat_administrators(chat_id)
+    admins_list = [
+        member.user.id
+        for member in admins_list
+        if member.status == 'creator' or member.status == 'administrator'
+    ]
+    print(admins_list)
+    bot_admins_list = admins_list
+    print(bot_admins_list)
+    if message.from_user.id in admins_list:
+        await message.delete()
 
 def clean_text(text: str):
     return text.translate(str.maketrans('', '', punctuation))  # обработчик сообщений, что заменить - на что заменить - что вырезать

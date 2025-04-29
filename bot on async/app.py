@@ -18,6 +18,8 @@ from common.bot_cmnds_list import private
 
 TOKEN = os.getenv("TOKEN")
 bot = Bot(token = TOKEN, default = DefaultBotProperties(parse_mode= ParseMode.HTML))
+bot_admins_list = []
+
 disp = Dispatcher()
 
 disp.include_router(user_private_router)

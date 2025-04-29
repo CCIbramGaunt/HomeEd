@@ -7,7 +7,7 @@ from dotenv import find_dotenv, load_dotenv
 
 
 from filters.chat_types import ChatTypeFilter
-from keyboards import reply
+from keyboards.reply import get_keyboard
 
 load_dotenv(find_dotenv())
 TOKEN = os.getenv("TOKEN")
@@ -17,15 +17,22 @@ user_private_router.message.filter(ChatTypeFilter(['private'])) #вызвали 
 
 @user_private_router.message(CommandStart())
 async def start_cmd(message: types.Message):
-    await message.answer('Привет, я виртуальный помощник',
-                         reply_markup = reply.start_kb_3.as_markup(
-                            resize_keyboard = True,
-                            input_field_placeholder='Что Вас интересует?'))
+    await message.answer(
+        'Привет, я виртуальный помощник',
+             reply_markup = get_keyboard(
+                'Меню',
+                'Оценка курса',
+                'Варианты оплаты',
+                'Варианты обучения',
+                placeholder = 'Что Вас интересует?',
+                sizes = (2,2)
+             )
+    )
+
 
 @user_private_router.message(or_f(Command('menu'), (F.text.lower().contains('меню'))))
 async def menu_cmd(message: types.Message):
-    await message.answer('Ваш id:' + str(message.from_user.id))
-    await message.reply('Главное меню:', reply_markup = reply.del_kb)
+    await message.reply('Главное меню:')
 
 @user_private_router.message(Command('evaluate'))
 @user_private_router.message(F.text.lower().contains('оцен'))
