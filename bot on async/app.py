@@ -14,6 +14,7 @@ load_dotenv(find_dotenv())
 
 from handlers.user_private import user_private_router
 from handlers.user_group import user_group_router
+from handlers.admin_private import admin_router
 from common.bot_cmnds_list import private
 
 TOKEN = os.getenv("TOKEN")
@@ -24,6 +25,7 @@ disp = Dispatcher()
 
 disp.include_router(user_private_router)
 disp.include_router(user_group_router)
+disp.include_router(admin_router)
 
 async def main():
     await bot.delete_webhook(drop_pending_updates = True)

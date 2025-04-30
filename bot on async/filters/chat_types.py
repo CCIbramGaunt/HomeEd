@@ -3,8 +3,6 @@ from aiogram.filters import Filter, IS_ADMIN
 from aiogram import Bot, types
 
 
-from handlers.user_group import bot_admins_list
-
 class ChatTypeFilter(Filter):
     def __init__(self, chat_types: list[str]) -> None:
         self.chat_types = chat_types
@@ -13,7 +11,8 @@ class ChatTypeFilter(Filter):
         return message.chat.type in self.chat_types
 
 class IsAdmin(Filter):
-    def __init__(self) -> None:
-        pass
-    async def __call__(self, message: types.Message, bot: Bot) -> bool:
-        return message.from_user.id in bot_admins_list
+    def __init__(self, admins_list: list[int]) -> None:
+        self.admins_list = admins_list
+
+    async def __call__(self, message: types.Message) -> bool:
+        return message.from_user.id in self.admins_list

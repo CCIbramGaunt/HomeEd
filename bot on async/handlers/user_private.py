@@ -1,10 +1,8 @@
-import asyncio
-import os
 from aiogram import types, Router, F
 from aiogram.filters import CommandStart, Command, or_f
 from aiogram.utils.formatting import as_list, as_marked_section, Bold
 from dotenv import find_dotenv, load_dotenv
-
+import os
 
 from filters.chat_types import ChatTypeFilter
 from keyboards.reply import get_keyboard
