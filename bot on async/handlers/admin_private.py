@@ -74,7 +74,7 @@ async def cancel_handler(message: types.Message, state: FSMContext) -> None:
 
 @admin_router.message(StateFilter('*'), Command("назад"))
 @admin_router.message(StateFilter('*'), F.text.casefold() == "назад")
-async def cancel_handler(message: types.Message, state: FSMContext) -> None:
+async def back_handler(message: types.Message, state: FSMContext) -> None:
     current_state = await state.get_state()
     if current_state == AddCourse.name:
         await message.answer('Предыдущего шага нет. Введите название курса или напишите "отмена"')
@@ -94,12 +94,19 @@ async def add_name(message: types.Message, state: FSMContext):
     await message.answer("Введите описание нового курса")
     await state.set_state(AddCourse.description)
 
+@admin_router.message(AddCourse.name)  # обработка ошибочного ввода (другой тип данных)
+async def add_name_check(message: types.Message, state: FSMContext):
+    await message.answer("Неверный ввод. Пожалуйста, введите текст")
+
 @admin_router.message(AddCourse.description, F.text)
 async def add_description(message: types.Message, state: FSMContext):
     await state.update_data(description=message.text)
     await message.answer("Введите стоимость нового курса")
     await state.set_state(AddCourse.price)
 
+@admin_router.message(AddCourse.description)
+async def add_description_check(message: types.Message, state: FSMContext):
+    await message.answer("Неверный ввод. Пожалуйста, введите текст")
 
 @admin_router.message(AddCourse.price, F.text)
 async def add_price(message: types.Message, state: FSMContext):
@@ -107,6 +114,9 @@ async def add_price(message: types.Message, state: FSMContext):
     await message.answer("Введите дополнительную информацию (доступность, рассрочка, скидка, время...)")
     await state.set_state(AddCourse.notes)
 
+@admin_router.message(AddCourse.price)
+async def add_price_check(message: types.Message, state: FSMContext):
+    await message.answer("Неверный ввод. Пожалуйста, введите текст")
 
 @admin_router.message(AddCourse.notes, F.text)
 async def add_notes(message: types.Message, state: FSMContext):
@@ -116,9 +126,7 @@ async def add_notes(message: types.Message, state: FSMContext):
     await message.answer(str(data))
     await state.clear()
 
-@admin_router.message(AddCourse.name)  # обработка ошибочного ввода (другой тип данных)
-@admin_router.message(AddCourse.description)
-@admin_router.message(AddCourse.price)
 @admin_router.message(AddCourse.notes)
-async def add_name(message: types.Message, state: FSMContext):
+async def add_notes_check(message: types.Message, state: FSMContext):
     await message.answer("Неверный ввод. Пожалуйста, введите текст")
+
