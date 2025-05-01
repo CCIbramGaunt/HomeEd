@@ -24,9 +24,9 @@ bot = Bot(token = TOKEN, default = DefaultBotProperties(parse_mode= ParseMode.HT
 disp = Dispatcher()
 
 disp.include_router(user_private_router)
+disp.include_router(eval_survey_router)
 disp.include_router(user_group_router)
 disp.include_router(admin_router)
-disp.include_router(eval_survey_router)
 
 async def main():
     await bot.delete_webhook(drop_pending_updates = True)
